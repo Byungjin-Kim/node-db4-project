@@ -29,22 +29,26 @@ exports.up = async function (knex) {
                 .inTable('recipes')
                 .onDelete('RESTRICT')
                 .onUpdate('RESTRICT');
-
         })
         .createTable('step_ingredients', tbl => {
             tbl.increments('step_ingredient_id')
             tbl.float('quantity')
                 .notNullable()
-            tbl.integer('step_number').notNullable()
-            tbl.integer('recipe_id')
+            tbl.integer('step_id')
+                .notNullable()
+                .unsigned()
+                .references('step_id')
+                .inTable('steps')
+                .onDelete('RESTRICT')
+                .onUpdate('RESTRICT');
+            tbl.integer('ingredient_id')
                 .unsigned() // forces integer to be positive
                 .notNullable()
                 .references('ingredient_id')
                 .inTable('ingredients')
                 .onDelete('RESTRICT')
                 .onUpdate('RESTRICT');
-
-        })
+        });
 };
 
 /**
@@ -55,6 +59,6 @@ exports.down = async function (knex) {
     return knex.schema
         .dropTableIfExists('step_ingredients')
         .dropTableIfExists('steps')
-        .dropTableIfExists('recipe_name')
+        .dropTableIfExists('ingredients')
         .dropTableIfExists('recipes')
 };

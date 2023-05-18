@@ -8,7 +8,7 @@ router.get('/:recipe_id', (req, res, next) => {
         .then(recipe => {
             res.status(200).json(recipe);
         })
-        .catch(next); // our custom err handling middleware in server.js will trap this
+        .catch(next);
 });
 
 router.use((err, req, res, next) => { // eslint-disable-line
